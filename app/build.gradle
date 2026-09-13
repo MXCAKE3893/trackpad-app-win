@@ -1,0 +1,33 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'jp.pocket.trackpad'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'jp.pocket.trackpad'
+        minSdk 28
+        targetSdk 35
+        versionCode 4
+        versionName '0.1.3'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    signingConfigs {
+        existingKey {
+            // Preserve compatibility with the APKs already installed by users.
+            // The original key stays outside this repository.
+            storeFile file(System.getenv('POCKET_TRACKPAD_KEYSTORE') ?: "${System.getProperty('user.home')}/.android/debug.keystore")
+            storePassword System.getenv('POCKET_TRACKPAD_STORE_PASSWORD') ?: 'android'
+            keyAlias System.getenv('POCKET_TRACKPAD_KEY_ALIAS') ?: 'androiddebugkey'
+            keyPassword System.getenv('POCKET_TRACKPAD_KEY_PASSWORD') ?: 'android'
+        }
+    }
+    buildTypes {
+        release {
+            debuggable false
+            signingConfig signingConfigs.existingKey
+        }
+    }
+}
